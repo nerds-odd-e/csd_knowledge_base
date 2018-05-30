@@ -18,7 +18,7 @@ end
 Then('I should see the wiki page containing') do |table|
   table.hashes.each do |row|
     row.each do |key, value|
-      page.should have_selector(".wiki-#{key}", text: value)
+      expect(page).to have_selector(".wiki-#{key}", text: value)
     end
   end
 end
@@ -28,7 +28,7 @@ Given('there is a wiki page with path {string} by {user}') do |path, user|
 end
 
 Then('I should see a link {string} to {string}') do |link, url|
-  page.should have_link(link, href: url)
+  expect(page).to have_link(link, href: url)
 end
 
 When("I click Edit This Wiki Page") do

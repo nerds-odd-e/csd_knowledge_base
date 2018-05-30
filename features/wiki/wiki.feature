@@ -10,7 +10,6 @@ Feature: Trainer's Wiki
     When I edited the page with
       | title         | body             |
       | my first page | something useful |
-    Then I visit "/wiki/trainers/wiki/Path/To/My/Page"
     And I should see the wiki page containing
       | title         | body             | revision | revision-date |
       | my first page | something useful | Craig   | On:    |
@@ -34,4 +33,4 @@ Feature: Trainer's Wiki
     When I edited the page with
       | title  | body                           |
       | a page | see a link to [[another page]] |
-    Then I should see a link "another page" to "/wiki_spaces/trainers/wiki/another%20page"
+    Then I should see a link "another page" to "/wiki/trainers/wiki/another%20page"
