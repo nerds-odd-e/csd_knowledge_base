@@ -14,6 +14,8 @@ gem 'yaw', github: 'nerds-odd-e/yaw'
 gem 'draper'
 gem 'simple_form'
 gem 'ckeditor'
+gem 'mysql2'
+gem 'appengine'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

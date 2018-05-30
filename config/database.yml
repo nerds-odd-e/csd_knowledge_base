@@ -22,7 +22,10 @@ test: &test
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: csd_knowledge_base
+  password: gL4621EdbD4bA2DD
+  username: root
+  socket: "/cloudsql/csd-knowledge-base:asia-northeast1:mysql-csd-knowledge-base"
 
 cucumber:
   <<: *test
