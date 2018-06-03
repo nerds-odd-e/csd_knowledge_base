@@ -1,0 +1,11 @@
+= simple_form_for([@wiki_space, @wiki_page]) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title
+    = f.input :body, as:"ckeditor", :input_html => { :ckeditor => {:toolbar => 'mini'} }
+    = f.input :path, as: :hidden
+
+  .form-actions
+    = f.button :submit
+

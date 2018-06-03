@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This migration comes from yaw (originally 20180508082549)
 class AddTableWikiPages2 < ActiveRecord::Migration[5.1]
   def change

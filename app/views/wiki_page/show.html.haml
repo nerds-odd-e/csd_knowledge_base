@@ -1,0 +1,15 @@
+.container.wiki.main_content
+  %h1.wiki-title
+    =@wiki_page.title
+    = link_to "Edit This Wiki Page", wiki_space_wiki_edit_path(@wiki_space, @wiki_page), class:"btn btn-default pull-right"
+  .wiki-body
+    =@wiki_page.render_body
+  .well
+    %ul
+      - @wiki_page.wiki_page_revisions.each do |revision|
+        %li.wiki-revision
+          Edited By:
+          = revision.user&.decorate&.link
+          %span.wiki-revision-date
+            On:
+            = revision.created_at.to_date

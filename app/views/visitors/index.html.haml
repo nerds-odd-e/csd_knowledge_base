@@ -6,6 +6,6 @@
   registered
 %p
   %ul
-    - Yaw::WikiSpace.all.each do |space|
+    - WikiSpace.all.each do |space|
       %li
-        = link_to space.title + " Wiki", yaw.wiki_space_wiki_page_path(space, "start")
+        = link_to space.title + " Wiki", wiki_space_wiki_page_path(space, "start")
