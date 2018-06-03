@@ -3,6 +3,7 @@
 
 class WikiPage < ApplicationRecord
   delegate :title=, :body=, :user=, to: :dirty_revision
+  delegate :body, to: :current_revision, allow_nil: true
   after_save :reset_dirty_revision
   belongs_to :wiki_space, required: true, inverse_of: :wiki_pages
   validates :path, uniqueness: { scope: :wiki_space_id }
@@ -19,7 +20,6 @@ class WikiPage < ApplicationRecord
     path
   end
 
-  delegate :body, to: :current_revision, allow_nil: true
   def title
     current_revision&.title || path&.split('/')&.last
   end
@@ -39,4 +39,4 @@ class WikiPage < ApplicationRecord
   def reset_dirty_revision
     @dirty_revision = nil
   end
-  end
+end
