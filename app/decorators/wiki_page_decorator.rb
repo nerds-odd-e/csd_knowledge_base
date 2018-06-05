@@ -12,7 +12,11 @@ class WikiPageDecorator < Draper::Decorator
       linktext =  matched.split("|")
       link = matched
       text = matched
-      if 1 < linktext.length && !linktext[0].empty?
+      if matched.first == "|"
+        # do nothing
+      elsif matched.last == "|"
+        # do nothing
+      elsif 1 < linktext.length
         link = linktext[0]
         text = linktext[1]
       end

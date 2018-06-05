@@ -69,4 +69,9 @@ describe WikiPageDecorator, type: :decorator do
     before { subject.body = '[[|text]]' }
     its(:render_body) { should have_link('|text', exact: true) }
   end
+
+  context 'the page with an invalid link and text that generates normal link2' do
+    before { subject.body = '[[link2|]]' }
+    its(:render_body) { should have_link('link2|', exact: true) }
+  end
 end
