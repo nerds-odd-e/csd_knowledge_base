@@ -15,8 +15,13 @@ class WikiPageDecorator < Draper::Decorator
         text = matched
       else
         linktext =  matched.split("|") 
-        link = linktext[0]
-        text = linktext[1]
+        if linktext[0].empty?
+          link = matched
+          text = matched
+        else
+          link = linktext[0]
+          text = linktext[1]
+        end
       end
       options = { class: 'internal' }
       options[:class] = 'absent' if find_sibling(link).blank?
