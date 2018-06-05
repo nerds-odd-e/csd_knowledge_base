@@ -9,9 +9,18 @@ class WikiPageDecorator < Draper::Decorator
     link_reg = /\[\[([^\]]+)\]\]/
     body.gsub(link_reg) do |match|
       matched = match[link_reg, 1]
+      pipe = matched.index("|")
+      if pipe.nil? 
+        link = matched
+        text = matched
+      else
+        linktext =  matched.split("|") 
+        link = linktext[0]
+        text = linktext[1]
+      end
       options = { class: 'internal' }
-      options[:class] = 'absent' if find_sibling(matched).blank?
-      h.link_to matched, h.wiki_space_wiki_page_path(wiki_space, matched), options
+      options[:class] = 'absent' if find_sibling(link).blank?
+      h.link_to text, h.wiki_space_wiki_page_path(wiki_space, link), options
     end.html_safe
     # rubocop:enable all
   end
