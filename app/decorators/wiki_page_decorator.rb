@@ -9,19 +9,12 @@ class WikiPageDecorator < Draper::Decorator
     link_reg = /\[\[([^\]]+)\]\]/
     body.gsub(link_reg) do |match|
       matched = match[link_reg, 1]
-      pipe = matched.index("|")
-      if pipe.nil? 
-        link = matched
-        text = matched
-      else
-        linktext =  matched.split("|") 
-        if linktext[0].empty?
-          link = matched
-          text = matched
-        else
-          link = linktext[0]
-          text = linktext[1]
-        end
+      linktext =  matched.split("|")
+      link = matched
+      text = matched
+      if 1 < linktext.length && !linktext[0].empty?
+        link = linktext[0]
+        text = linktext[1]
       end
       options = { class: 'internal' }
       options[:class] = 'absent' if find_sibling(link).blank?
