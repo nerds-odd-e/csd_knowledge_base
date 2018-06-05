@@ -32,5 +32,69 @@ Feature: Trainer's Wiki
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with
       | title  | body                           |
+      | a page | see a link to [[another]] |
+    Then I should see a link "another" to "/wiki/trainers/wiki/another"
+
+  Scenario: スペースつきのリンクが作成されている
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title  | body                           |
       | a page | see a link to [[another page]] |
     Then I should see a link "another page" to "/wiki/trainers/wiki/another%20page"
+
+  @wip
+  Scenario: セクションつきのリンクも設定できる
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title  | body                           |
+      | a page | see a link to [[page#section]] |
+    Then I should see a link "page#section" to "/wiki/trainers/wiki/page#section"
+
+  @wip
+  Scenario: リンク先に別の表示名を設定できる
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title   | body                                |
+      | a page1 | see a link to [[page#section\|name]] |
+    Then I should see a link "name" to "/wiki/trainers/wiki/page#section"
+
+  @wip
+  Scenario: エスケープされた特殊文字を表示名として設定できる
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title  | body                           |
+      | a page | see a link to [[page\\\|name]] |
+    Then I should see a link "page|name" to "/wiki/trainers/wiki/page|name"
+
+  @wip
+  Scenario: パイプを使用して半角括弧を除いた文字を表示する
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title  | body                           |
+      | a page | see a link to [[page (sub)\|]] |
+    Then I should see a link "page" to "/wiki/trainers/wiki/page%20(sub)"
+
+  Scenario: リンクの直前にあるテキストは取り込まれない
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title  | body                           |
+      | a page | see a link to text[[page]] |
+    Then I should see a link "page" to "/wiki/trainers/wiki/page"
+    And "text"というテキストが存在する
+
+  Scenario: リンクの直後にあるテキストは取り込まれない
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title  | body                           |
+      | a page | see a link to [[page]]text |
+    Then I should see a link "page" to "/wiki/trainers/wiki/page"
+    And "text"というテキストが存在する
+
+  @wip
+  Scenario: <nowiki>[[a]]</nowiki> でリンクが生成されない
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title  | body                           |
+      | a page | see a link to <nowiki>[[a]]</nowiki> |
+    Then I should not see a link "a" to "/wiki/trainers/wiki/a"
+    And "[[a]]"という文字がリンクではない

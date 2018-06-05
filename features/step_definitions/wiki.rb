@@ -32,6 +32,18 @@ Then('I should see a link {string} to {string}') do |link, url|
   expect(page).to have_link(link, href: url)
 end
 
+Then('I should not see a link {string} to {string}') do |link, url|
+  expect(page).to !have_link(link, href: url)
+end
+
+Then("{string}というテキストが存在する") do |text|
+  expect(page).to have_text(text)
+end
+
+Then("{string}という文字がリンクではない") do |text|
+  expect(page).to have_text(text)
+end
+
 When('I click Edit This Wiki Page') do
   click_on 'Edit This Wiki Page'
 end
