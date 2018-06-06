@@ -51,7 +51,7 @@ Feature: Trainer's Wiki
     Then I should see a link "page#section" to "/wiki/trainers/wiki/page#section"
 
   @wip
-  Scenario: リンク先に別の表示名を設定できる
+  Scenario: リンク先に別の表示名を設定できる（セクション付き）
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with
       | title   | body                                |
@@ -59,12 +59,19 @@ Feature: Trainer's Wiki
     Then I should see a link "name" to "/wiki/trainers/wiki/page#section"
 
  
-  Scenario: リンク先に別の表示名を設定できる2
+  Scenario: リンク先に別の表示名を設定できる(シンプル)
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with
       | title   | body                                |
       | a page1 | see a link to [[page\|name]] |
     Then I should see a link "name" to "/wiki/trainers/wiki/page"
+
+  Scenario: リンク先に別の表示名を設定できる（前パイプ）
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title   | body                                |
+      | a page1 | see a link to [[\|name]] |
+    Then I should see a link "|name" to "/wiki/trainers/wiki/%7Cname"
 
   @wip
   Scenario: エスケープされた特殊文字を表示名として設定できる
