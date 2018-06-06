@@ -41,6 +41,24 @@ Feature: Trainer's Wiki
       | title  | body                           |
       | a page | see a link to [[another page]] |
     Then I should see a link "another page" to "/wiki/trainers/wiki/another%20page"
+  
+  #@wip
+  Scenario Outline: Wiki Link
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with context "<WikiLink>"
+    Then I should see a link "<text>" to url "/wiki/trainers/wiki/<url>"
+    Examples:
+      | WikiLink    | text        | url   |
+      #------------------------------------
+      | [[a]]      | a           | a     |
+      | [[a b]]     | a b         | a%20b   |
+      | [[a\|b]]    | b           | a     |
+      # | [[a#b]]     | a#b         | a#b   |
+      # | [[a#b\|c]]  | c           | a#b   |
+      # | [[a:b]]     | b           | a/b   |
+      # | [[a\\\|b]]  | a\|b        | a%7Cb |
+      # | [[a (b)\|]] | a           | a (b) |
+      # | [[[[A]]]]   | [[A]]       | A     |
 
   @wip
   Scenario: セクションつきのリンクも設定できる

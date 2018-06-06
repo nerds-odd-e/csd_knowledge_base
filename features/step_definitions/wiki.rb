@@ -11,6 +11,7 @@ end
 When('I edited the page with') do |table|
   pp table.hashes.first
   table.hashes.first.each do |key, value|
+    pp key
     fill_in key.humanize, with: value
   end
   find('input[name="commit"]').click
@@ -46,4 +47,13 @@ end
 
 When('I click Edit This Wiki Page') do
   click_on 'Edit This Wiki Page'
+end
+
+When("I edited the page with context {string}") do |wikilink|
+  fill_in "body".humanize, with: wikilink
+  find('input[name="commit"]').click
+end
+
+Then("I should see a link {string} to url {string}") do |text, url|
+  expect(page).to have_link(text, href: url)
 end
