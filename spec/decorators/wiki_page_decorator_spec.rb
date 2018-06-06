@@ -109,7 +109,17 @@ describe WikiPageDecorator, type: :decorator do
   end
 
   context 'the page with an invalid link and text that generates normal link2' do
-    before { subject.body = '[[link#section]]' }
-    its(:render_body) { should have_link('link#section', exact: true) }
+    before { subject.body = "[[link\\|text]]" }
+    its(:render_body) { should have_link('link|text', exact: true) }
   end
+
+  context 'the page with an invalid link and text that generates normal link2' do
+    before { subject.body = "[[link\\\\|text]]" }
+    its(:render_body) { should have_link(
+      'text',
+      href:h.wiki_space_wiki_page_path(subject.wiki_space, "link\\"),
+      exact: true
+    ) }
+  end
+
 end
