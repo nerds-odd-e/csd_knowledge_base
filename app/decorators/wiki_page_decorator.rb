@@ -3,7 +3,7 @@
 
 class WikiPageDecorator < Draper::Decorator
   delegate_all
-
+  
   def render_body
     # rubocop:disable all
     link_reg = /\[\[([^\]]+)\]\]/
@@ -16,7 +16,7 @@ class WikiPageDecorator < Draper::Decorator
         # do nothing
       elsif matched.last == "|"
         # do nothing
-      elsif 1 < linktext.length
+      elsif linktext.length == 2
         link = linktext[0]
         text = linktext[1]
       end
