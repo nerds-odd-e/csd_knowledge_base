@@ -113,7 +113,7 @@ describe WikiPageDecorator, type: :decorator do
     its(:render_body) { should have_link('link|text', exact: true) }
   end
 
-  context 'the page with an invalid link and text that generates normal link2' do
+  context 'double back slash case' do
     before { subject.body = "[[link\\\\|text]]" }
     its(:render_body) { should have_link(
       'text',
