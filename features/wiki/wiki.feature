@@ -31,7 +31,7 @@ Feature: Trainer's Wiki
   Scenario Outline: Wiki Link
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with context "<WikiLink>"
-    Then I should see a link "<text>" to url "/wiki/trainers/wiki/<url>"
+    Then I should see a link "<text>" to "/wiki/trainers/wiki/<url>"
     Examples:
       | WikiLink    | text        | url   |
       #------------------------------------
