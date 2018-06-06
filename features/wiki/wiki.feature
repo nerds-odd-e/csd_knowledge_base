@@ -66,6 +66,7 @@ Feature: Trainer's Wiki
       | a page1 | see a link to [[page\|name]] |
     Then I should see a link "name" to "/wiki/trainers/wiki/page"
 
+  @wip
   Scenario: エスケープされた特殊文字を表示名として設定できる
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with
