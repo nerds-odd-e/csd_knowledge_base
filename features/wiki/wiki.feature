@@ -58,7 +58,14 @@ Feature: Trainer's Wiki
       | a page1 | see a link to [[page#section\|name]] |
     Then I should see a link "name" to "/wiki/trainers/wiki/page#section"
 
-  @wip
+ 
+  Scenario: リンク先に別の表示名を設定できる2
+    Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
+    When I edited the page with
+      | title   | body                                |
+      | a page1 | see a link to [[page\|name]] |
+    Then I should see a link "name" to "/wiki/trainers/wiki/page"
+
   Scenario: エスケープされた特殊文字を表示名として設定できる
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with
