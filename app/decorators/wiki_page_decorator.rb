@@ -20,8 +20,13 @@ class WikiPageDecorator < Draper::Decorator
         link = linktext[0]
         text = linktext[1]
       end
+      ancor = link
+      ancorlink = link.split("#")
+      if ancorlink.length == 2
+        ancor = ancorlink[0]
+      end
       options = { class: 'internal' }
-      options[:class] = 'absent' if find_sibling(link).blank?
+      options[:class] = 'absent' if find_sibling(ancor).blank?
       h.link_to text, h.wiki_space_wiki_page_path(wiki_space, link), options
     end.html_safe
     # rubocop:enable all

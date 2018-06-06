@@ -84,4 +84,32 @@ describe WikiPageDecorator, type: :decorator do
     before { subject.body = '[[link2||text]]' }
     its(:render_body) { should have_link('link2||text', exact: true) }
   end
+
+  context 'the page with an invalid link and text that generates normal link2' do
+    before { subject.body = '[[link#section]]' }
+    its(:render_body) {
+      should have_link(
+        'link#section',
+        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#section'),
+        class: 'absent',
+        exact: true
+      )
+    }
+
+    context 'when the linked page exists' do
+      before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
+      its(:render_body) { should have_link(
+        'link#section',
+        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#section'),
+        class: 'internal',
+        exact: true
+        )
+      }
+    end
+  end
+
+  context 'the page with an invalid link and text that generates normal link2' do
+    before { subject.body = '[[link#section]]' }
+    its(:render_body) { should have_link('link#section', exact: true) }
+  end
 end
