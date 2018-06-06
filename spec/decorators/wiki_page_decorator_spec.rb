@@ -122,4 +122,9 @@ describe WikiPageDecorator, type: :decorator do
     ) }
   end
 
+  context 'create wikipage link in wikispace' do
+    before { subject.body = "[[wikispace:wikipage]]" }
+    its(:render_body) { should have_link('wikipage', href:h.wiki_space_wiki_page_path(subject.wiki_space, "wikispace/wikipage"), exact: true) }
+  end
+
 end

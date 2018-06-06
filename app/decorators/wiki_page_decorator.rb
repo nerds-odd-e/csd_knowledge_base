@@ -12,25 +12,29 @@ class WikiPageDecorator < Draper::Decorator
   def get_link_text(matched)
     link = matched
     text = matched
-      if matched.first == "|"
-        # do nothing
-      elsif matched.last == "|"
-        # do nothing
-      elsif matched.include?('\\\\|')
-        link.gsub!('\\|', "|")
-        textlink = link.split("|")
-        link = textlink[0]
-        text = textlink[1]
-      elsif matched.include?('\\|')
-        link.delete!("\\")
-      elsif matched.split("|").length == 2
-        if matched.split("\\").length < 2
-          link = matched.split("|")[0]
-          text = matched.split("|")[1]
-        end
-      end
 
-      return link, text
+    if matched.first == "|"
+      # do nothing
+    elsif matched.last == "|"
+      # do nothing
+    elsif matched.include?('\\\\|')
+      link.gsub!('\\|', "|")
+      textlink = link.split("|")
+      link = textlink[0]
+      text = textlink[1]
+    elsif matched.include?('\\|')
+      link.delete!("\\")
+    elsif matched.split("|").length == 2
+      if matched.split("\\").length < 2
+        link = matched.split("|")[0]
+        text = matched.split("|")[1]
+      end
+    elsif matched.split(":").length == 2
+      link = matched.gsub(":", "/")
+      text = matched.split(":")[1]
+    end
+
+    return link, text
   end
 
   def render_body_html_unsafe
