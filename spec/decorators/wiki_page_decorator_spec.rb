@@ -108,6 +108,29 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
+  context 'brabra' do
+    before { subject.body = '[[link#section|other]]' }
+    xit(:render_body) {
+      should have_link(
+        'other',
+        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#section'),
+        class: 'absent',
+        exact: true
+      )
+    }
+
+    context 'when the linked page exists' do
+      before { create :wiki_page, path: '', wiki_space: subject.wiki_space }
+      xit(:render_body) { should have_link(
+        'link#section',
+        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#section'),
+        class: 'internal',
+        exact: true
+        )
+      }
+    end
+  end
+
   context 'the page with an invalid link and text that generates normal link2' do
     before { subject.body = "[[link\\|text]]" }
     its(:render_body) { should have_link('link|text', exact: true) }
