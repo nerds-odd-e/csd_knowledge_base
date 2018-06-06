@@ -40,10 +40,10 @@ Feature: Trainer's Wiki
       | [[a\|b]]    | b           |  a    |
       | [[\|b]]     | \|b         | %7Cb  |
       | [[a\|]]     | a\|         | a%7C  |
-      # | [[a#b]]     | a#b         | a#b   |
-      # | [[a#b\|c]]  | c           | a#b   |
+      | [[a#b]]     | a#b         | a%23b   |
+      | [[a#b\|c]]  | c           | a%23b   |
       # | [[a:b]]     | b           | a/b   |
-      # | [[a\\\|b]]  | a\|b        | a%7Cb |
+      | [[a\\\|b]]  | a\|b        | a%7Cb |
       # | [[a (b)\|]] | a           | a (b) |
       # | [[[[A]]]]   | [[A]]       | A     |
 

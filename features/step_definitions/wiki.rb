@@ -42,6 +42,7 @@ When('I click Edit This Wiki Page') do
 end
 
 When("I edited the page with context {string}") do |wikilink|
+  pp wikilink
   fill_in "body".humanize, with: wikilink
   find('input[name="commit"]').click
 end
