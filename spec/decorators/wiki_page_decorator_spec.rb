@@ -118,7 +118,7 @@ describe WikiPageDecorator, type: :decorator do
 
   context 'アンカーとエイリアスが設定されている' do
     before { subject.body = '[[link#anchor|other]]' }
-    xit(:render_body) {
+    its(:render_body) {
       should have_link(
         'other',
         href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
@@ -129,8 +129,8 @@ describe WikiPageDecorator, type: :decorator do
 
     context 'リンクされたページが存在している' do
       before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
-      xit(:render_body) { should have_link(
-        'link#anchor',
+      its(:render_body) { should have_link(
+        'other',
         href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
         class: 'internal',
         exact: true
