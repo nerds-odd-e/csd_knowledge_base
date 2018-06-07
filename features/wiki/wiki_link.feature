@@ -31,6 +31,7 @@ Feature: Wiki Link
       #-------------------------------------------
       | a[[b]]      | b           | ab   | b     |
       | [[a]]b      | a           | ab   | a     |
+      | [[[[A]]]]   | A           | [[A]]| A     |
 
   Scenario: <nowiki>[[a]]</nowiki> でリンクが生成されない
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
@@ -49,4 +50,3 @@ Feature: Wiki Link
       | wiki_link   | text        | url   |
       #------------------------------------
       | [[a (b)\|]] | a           | a (b) |
-      | [[[[A]]]]   | [[A]]       | A     |
