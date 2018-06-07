@@ -24,12 +24,19 @@ class WikiLink
     false
   end
 
+  def xxx(wiki_link_raw)
+    if wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
+      return true
+    end
+    false
+  end
+
   def construct(wiki_link_raw) 
     @link = wiki_link_raw
     @text = wiki_link_raw
     if escapefromreality(wiki_link_raw)
       return
-    elsif wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
+    elsif xxx(wiki_link_raw)
       return
     elsif wiki_link_raw.split("|").length == 2
       if wiki_link_raw.split("\\").length < 2
