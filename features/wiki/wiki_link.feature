@@ -1,16 +1,15 @@
-Feature: Trainer's Wiki Link
+Feature: Wiki Link
   Background:
     Given There is a wiki space named "trainers"
     Given "Craig" is a user
-    And "Terry" is a user
     And I log in as user Craig
 
-  Scenario Outline: Wiki Link
+  Scenario Outline: 指定のWiki Linksが正しく動作する
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
-    When I edited the page with context "<WikiLink>"
+    When I edited the page with context "<wiki_link>"
     Then I should see a link "<text>" to "/wiki/trainers/wiki/<url>"
     Examples:
-      | WikiLink    | text        | url   |
+      | wiki_link   | text        | url   |
       #------------------------------------
       | [[a]]       | a           | a     |
       | [[a b]]     | a b         | a%20b |
@@ -22,15 +21,14 @@ Feature: Trainer's Wiki Link
       | [[a:b]]     | b           | a/b   |
       | [[a\\\|b]]  | a\|b        | a%7Cb |
 
-
   Scenario Outline: リンクの直前直後のテキストは取り込まれない
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
-    When I edited the page with context "<WikiLink>"
+    When I edited the page with context "<wiki_link>"
     Then I should see a link "<link_label>" to "/wiki/trainers/wiki/<url>"
     And "<text>"というテキストが存在する
     Examples:
-      | WikiLink    | link_label  | text | url   |
-      #------------------------------------
+      | wiki_link   | link_label  | text | url   |
+      #-------------------------------------------
       | a[[b]]      | b           | ab   | b     |
       | [[a]]b      | a           | ab   | a     |
 
@@ -46,10 +44,10 @@ Feature: Trainer's Wiki Link
   @wip
   Scenario Outline: Wiki Link wip
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
-    When I edited the page with context "<WikiLink>"
+    When I edited the page with context "<wiki_link>"
     Then I should see a link "<text>" to "/wiki/trainers/wiki/<url>"
     Examples:
-      | WikiLink    | text        | url   |
+      | wiki_link   | text        | url   |
       #------------------------------------
       | [[a (b)\|]] | a           | a (b) |
       | [[[[A]]]]   | [[A]]       | A     |
