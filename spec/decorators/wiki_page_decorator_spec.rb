@@ -98,7 +98,7 @@ describe WikiPageDecorator, type: :decorator do
     }
 
     context 'リンクされたページが存在している' do
-      before { create :wiki_page, path: '', wiki_space: subject.wiki_space }
+      before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
       xit(:render_body) { should have_link(
         'link#anchor',
         href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
@@ -110,6 +110,7 @@ describe WikiPageDecorator, type: :decorator do
   end
 
   test_cases = [
+    # context, body, link_label, url
     ['wikispaceの中にあるwikipageへのリンク', '[[wikispace:wikipage]]', 'wikipage', 'wikispace/wikipage'],
     ['スラッシュ付きでwikipageへのリンク', '[[wikispace/wikipage|wikipage]]', 'wikipage', 'wikispace/wikipage'],
     ['エスケープされたパイプの前にバックスラッシュがある', '[[link\\\\|text]]', 'text', 'link\\'],
