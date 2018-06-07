@@ -41,7 +41,7 @@ Feature: Trainer's Wiki Link
       | title  | body                                 |
       | a page | see a link to <nowiki>[[a]]</nowiki> |
     Then I should not see a link "a" to "/wiki/trainers/wiki/a"
-    And "[[a]]"という文字がリンクではない
+    And "[[a]]"というテキストが存在する
 
   @wip
   Scenario Outline: Wiki Link wip
