@@ -142,19 +142,14 @@ describe WikiPageDecorator, type: :decorator do
     ) }
   end
 
-  context 'wikispaceの中にあるwikipageへのリンク' do
-    before { subject.body = "[[wikispace:wikipage]]" }
-    its(:render_body) { should have_link('wikipage', href:h.wiki_space_wiki_page_path(subject.wiki_space, "wikispace/wikipage"), exact: true) }
-  end
-
-  context 'スラッシュ付きでwikipageへのリンク' do
-    before { subject.body = "[[wikispace/wikipage|wikipage]]" }
-    its(:render_body) { should have_link('wikipage', href:h.wiki_space_wiki_page_path(subject.wiki_space, "wikispace/wikipage"), exact: true) }
-  end
-
-  test = ['a', '[[a]]', 'a']
-  context test[0] do
-    before { subject.body = test[1] }
-    its(:render_body) { should have_link(test[2], href:h.wiki_space_wiki_page_path(subject.wiki_space, test[2]), exact: true) }
+  test_list = [
+    ['wikispaceの中にあるwikipageへのリンク', '[[wikispace:wikipage]]', 'wikipage', 'wikispace/wikipage'],
+    ['スラッシュ付きでwikipageへのリンク', '[[wikispace/wikipage|wikipage]]', 'wikipage', 'wikispace/wikipage'],
+  ]
+  test_list.each do |test|
+    context test[0] do
+      before { subject.body = test[1] }
+      its(:render_body) { should have_link(test[2], href:h.wiki_space_wiki_page_path(subject.wiki_space, test[3]), exact: true) }
+    end
   end
 end
