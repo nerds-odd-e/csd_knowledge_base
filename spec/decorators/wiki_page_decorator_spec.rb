@@ -111,19 +111,19 @@ describe WikiPageDecorator, type: :decorator do
 
   test_cases = [
     # context, body, link_label, url
-    ['wikispaceの中にあるwikipageへのリンク', '[[wikispace:wikipage]]', 'wikipage', 'wikispace/wikipage'],
-    ['スラッシュ付きでwikipageへのリンク', '[[wikispace/wikipage|wikipage]]', 'wikipage', 'wikispace/wikipage'],
-    ['エスケープされたパイプの前にバックスラッシュがある', '[[link\\\\|text]]', 'text', 'link\\'],
-    ['パイプがエスケープされている', '[[link\\|text]]', 'link|text', 'link|text'],
-    ['リンク先が設定されていないエイリアス', '[[|text]]', '|text', '|text'],
-    ['エイリアスが設定されていない', '[[link|]]', 'link|', 'link|'],
-    ['パイプが二つ設定されている', '[[link||]]', 'link||', 'link||'],
-    ['エイリアスはあるがパイプが二つ設定されている', '[[link||text]]', 'link||text', 'link||text'],  
+    {context: 'wikispaceの中にあるwikipageへのリンク', body: '[[wikispace:wikipage]]', link_label: 'wikipage', url: 'wikispace/wikipage'},
+    {context: 'スラッシュ付きでwikipageへのリンク', body: '[[wikispace/wikipage|wikipage]]', link_label: 'wikipage', url: 'wikispace/wikipage'},
+    {context: 'エスケープされたパイプの前にバックスラッシュがある', body: '[[link\\\\|text]]', link_label: 'text', url: 'link\\'},
+    {context: 'パイプがエスケープされている', body: '[[link\\|text]]', link_label: 'link|text', url: 'link|text'},
+    {context: 'リンク先が設定されていないエイリアス', body: '[[|text]]', link_label: '|text', url: '|text'},
+    {context: 'エイリアスが設定されていない', body: '[[link|]]', link_label: 'link|', url: 'link|'},
+    {context: 'パイプが二つ設定されている', body: '[[link||]]', link_label: 'link||', url: 'link||'},
+    {context: 'エイリアスはあるがパイプが二つ設定されている', body: '[[link||text]]', link_label: 'link||text', url: 'link||text'},  
   ]
   test_cases.each do |test_case|
-    context test_case[0] do
-      before { subject.body = test_case[1] }
-      its(:render_body) { should have_link(test_case[2], href:h.wiki_space_wiki_page_path(subject.wiki_space, test_case[3]), exact: true) }
+    context test_case[:context] do
+      before { subject.body = test_case[:body] }
+      its(:render_body) { should have_link(test_case[:link_label], href:h.wiki_space_wiki_page_path(subject.wiki_space, test_case[:url]), exact: true) }
     end
   end
 end
