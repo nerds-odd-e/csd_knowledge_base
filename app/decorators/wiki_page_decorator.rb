@@ -31,8 +31,20 @@ class WikiLink
       return
     end
     a = wiki_link_raw.split("|", -1)
-    pp a
-    if a.length < 2 || a[0].empty? || a[1].empty?
+    # pp a
+    if a.length < 2
+      return
+    end
+    if a[0].empty?
+      return
+    end
+    result = /([^()]*) +\([^()]*\)/.match a[0]
+    if result
+      @link = a[0]
+      @text = result[1]
+      return
+    end
+    if a[1].empty?
       return
     end
     if wiki_link_raw.split("\\").length < 2
