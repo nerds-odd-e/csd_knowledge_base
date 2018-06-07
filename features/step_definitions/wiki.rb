@@ -9,9 +9,7 @@ Given('There is a wiki space named {string}') do |name|
 end
 
 When('I edited the page with') do |table|
-  pp table.hashes.first
   table.hashes.first.each do |key, value|
-    pp key
     fill_in key.humanize, with: value
   end
   find('input[name="commit"]').click
@@ -42,7 +40,6 @@ When('I click Edit This Wiki Page') do
 end
 
 When("I edited the page with context {string}") do |wikilink|
-  pp wikilink
   fill_in "body".humanize, with: wikilink
   find('input[name="commit"]').click
 end
