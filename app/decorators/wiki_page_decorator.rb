@@ -79,9 +79,8 @@ class WikiPageDecorator < Draper::Decorator
       matched = match[link_reg, 1]
       link, text = get_link_text(matched)
 
-      ancor = get_ancor(link)
       options = { class: 'internal' }
-      options[:class] = 'absent' if find_sibling(ancor).blank?
+      options[:class] = 'absent' if find_sibling(get_ancor(link)).blank?
 
       h.link_to text, h.wiki_space_wiki_page_path(wiki_space, link), options
     end.html_safe
