@@ -24,7 +24,7 @@ class WikiLink
     false
   end
 
-  def xxx(wiki_link_raw)
+  def invalid_pipe(wiki_link_raw)
     if wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
       return true
     end
@@ -34,7 +34,7 @@ class WikiLink
   def construct(wiki_link_raw) 
     @link = wiki_link_raw
     @text = wiki_link_raw
-    if escape_from_pipe(wiki_link_raw) || xxx(wiki_link_raw) || coloner(wiki_link_raw)
+    if escape_from_pipe(wiki_link_raw) || invalid_pipe(wiki_link_raw) || coloner(wiki_link_raw)
       return
     elsif wiki_link_raw.split("|").length == 2
       if wiki_link_raw.split("\\").length < 2
