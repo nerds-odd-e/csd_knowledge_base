@@ -110,9 +110,11 @@ describe WikiPageDecorator, type: :decorator do
 
   context 'もしもwikilinksに#とpipeがきたら、いい感じになるといいなぁ' do
     before { subject.body = '[[link#section|other]]' }
-    xit(:render_body) {
+    #before { subject.body = '[[link#section]]' }
+    its(:render_body) {
       should have_link(
         'other',
+        #'link#section',
         href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#section'),
         class: 'absent',
         exact: true
@@ -120,7 +122,7 @@ describe WikiPageDecorator, type: :decorator do
     }
 
     context 'when the linked page exists' do
-      before { create :wiki_page, path: '', wiki_space: subject.wiki_space }
+      before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
       xit(:render_body) { should have_link(
         'link#section',
         href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#section'),

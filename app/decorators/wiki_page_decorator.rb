@@ -65,11 +65,14 @@ class WikiPageDecorator < Draper::Decorator
   end
 
   def get_ancor(link)
+    pp "+++++++++++++++++++++++++"
+    pp link
     ancor = link
     ancorlink = link.split("#")
     if ancorlink.length == 2
       ancor = ancorlink[0]
     end
+    pp ancor
     ancor
   end
 
@@ -82,7 +85,9 @@ class WikiPageDecorator < Draper::Decorator
       ancor = get_ancor(link)
       options = { class: 'internal' }
       options[:class] = 'absent' if find_sibling(ancor).blank?
-    
+      pp "---------------------"
+      pp options
+
       h.link_to text, h.wiki_space_wiki_page_path(wiki_space, link), options
     end.html_safe
   end
