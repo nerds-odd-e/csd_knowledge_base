@@ -15,6 +15,15 @@ class WikiLink
     false
   end
 
+  def xxx(wiki_link_raw)
+    if wiki_link_raw.split(":").length == 2
+      @link = wiki_link_raw.gsub(":", "/")
+      @text = wiki_link_raw.split(":")[1]
+      return true
+    end
+    false
+  end
+
   def construct(wiki_link_raw) 
     @link = wiki_link_raw
     @text = wiki_link_raw
@@ -27,9 +36,7 @@ class WikiLink
         @link = wiki_link_raw.split("|")[0]
         @text = wiki_link_raw.split("|")[1]
       end
-    elsif wiki_link_raw.split(":").length == 2
-      @link = wiki_link_raw.gsub(":", "/")
-      @text = wiki_link_raw.split(":")[1]
+    elsif xxx(wiki_link_raw)
     end
   end
 
