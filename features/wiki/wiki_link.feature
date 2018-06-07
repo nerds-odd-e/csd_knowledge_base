@@ -32,7 +32,6 @@ Feature: Wiki Link
       | a[[b]]      | b           | ab   | b     |
       | [[a]]b      | a           | ab   | a     |
 
-  @wip
   Scenario: <nowiki>[[a]]</nowiki> でリンクが生成されない
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with

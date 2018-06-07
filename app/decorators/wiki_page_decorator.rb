@@ -74,6 +74,10 @@ class WikiPageDecorator < Draper::Decorator
   end
 
   def render_body_html_unsafe
+    nowiki_reg = /<nowiki>(\[\[[^\]]+\]\])<\/nowiki>/
+    body.gsub(nowiki_reg) do |match|
+      return match[nowiki_reg, 1]
+    end
     link_reg = /\[\[([^\]]+)\]\]/
     body.gsub(link_reg) do |match|
       matched = match[link_reg, 1]
