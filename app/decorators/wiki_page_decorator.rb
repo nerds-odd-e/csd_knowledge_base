@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 class WikiLink
   attr_accessor :link, :text
-  def escapefromreality(wiki_link_raw)
+  def escape_from_pipe(wiki_link_raw)
     if wiki_link_raw.include?('\\\\|')
       @link.gsub!('\\|', "|")
       textlink = @link.split("|")
@@ -34,16 +34,13 @@ class WikiLink
   def construct(wiki_link_raw) 
     @link = wiki_link_raw
     @text = wiki_link_raw
-    if escapefromreality(wiki_link_raw)
-      return
-    elsif xxx(wiki_link_raw)
+    if escape_from_pipe(wiki_link_raw) || xxx(wiki_link_raw) || coloner(wiki_link_raw)
       return
     elsif wiki_link_raw.split("|").length == 2
       if wiki_link_raw.split("\\").length < 2
         @link = wiki_link_raw.split("|")[0]
         @text = wiki_link_raw.split("|")[1]
       end
-    elsif coloner(wiki_link_raw)
     end
   end
 
