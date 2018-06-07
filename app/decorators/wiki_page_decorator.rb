@@ -18,8 +18,7 @@ class WikiLink
   def construct(wiki_link_raw) 
     @link = wiki_link_raw
     @text = wiki_link_raw
-    escaped = escapefromreality(wiki_link_raw)
-    if escaped
+    if escapefromreality(wiki_link_raw)
       return
     end
     if wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
