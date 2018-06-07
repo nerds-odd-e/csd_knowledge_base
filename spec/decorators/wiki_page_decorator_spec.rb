@@ -62,25 +62,6 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
-  context 'リンク先が設定されていないエイリアス' do
-    before { subject.body = '[[|text]]' }
-    its(:render_body) { should have_link('|text', exact: true) }
-  end
-
-  context 'エイリアスが設定されていない' do
-    before { subject.body = '[[link|]]' }
-    its(:render_body) { should have_link('link|', exact: true) }
-  end
-
-  context 'パイプが二つ設定されている' do
-    before { subject.body = '[[link||]]' }
-    its(:render_body) { should have_link('link||', exact: true) }
-  end
-
-  context 'エイリアスはあるがパイプが二つ設定されている' do
-    before { subject.body = '[[link||text]]' }
-    its(:render_body) { should have_link('link||text', exact: true) }
-  end
 
   context 'アンカーが設定されているリンク' do
     before { subject.body = '[[link#anchor]]' }
@@ -128,28 +109,20 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
-  context 'パイプがエスケープされている' do
-    before { subject.body = "[[link\\|text]]" }
-    its(:render_body) { should have_link('link|text', exact: true) }
-  end
-
-  context 'エスケープされたパイプの前にバックスラッシュがある' do
-    before { subject.body = "[[link\\\\|text]]" }
-    its(:render_body) { should have_link(
-      'text',
-      href:h.wiki_space_wiki_page_path(subject.wiki_space, "link\\"),
-      exact: true
-    ) }
-  end
-
-  test_list = [
+  test_cases = [
     ['wikispaceの中にあるwikipageへのリンク', '[[wikispace:wikipage]]', 'wikipage', 'wikispace/wikipage'],
     ['スラッシュ付きでwikipageへのリンク', '[[wikispace/wikipage|wikipage]]', 'wikipage', 'wikispace/wikipage'],
+    ['エスケープされたパイプの前にバックスラッシュがある', '[[link\\\\|text]]', 'text', 'link\\'],
+    ['パイプがエスケープされている', '[[link\\|text]]', 'link|text', 'link|text'],
+    ['リンク先が設定されていないエイリアス', '[[|text]]', '|text', '|text'],
+    ['エイリアスが設定されていない', '[[link|]]', 'link|', 'link|'],
+    ['パイプが二つ設定されている', '[[link||]]', 'link||', 'link||'],
+    ['エイリアスはあるがパイプが二つ設定されている', '[[link||text]]', 'link||text', 'link||text'],  
   ]
-  test_list.each do |test|
-    context test[0] do
-      before { subject.body = test[1] }
-      its(:render_body) { should have_link(test[2], href:h.wiki_space_wiki_page_path(subject.wiki_space, test[3]), exact: true) }
+  test_cases.each do |test_case|
+    context test_case[0] do
+      before { subject.body = test_case[1] }
+      its(:render_body) { should have_link(test_case[2], href:h.wiki_space_wiki_page_path(subject.wiki_space, test_case[3]), exact: true) }
     end
   end
 end
