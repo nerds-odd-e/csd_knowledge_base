@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 class WikiLink
   attr_accessor :link, :text
+
   def construct(wiki_link_raw)
     @link = wiki_link_raw
     @text = wiki_link_raw
-
-    if wiki_link_raw.first == "|"
-      # do nothing
-    elsif wiki_link_raw.last == "|"
-      # do nothing
-    elsif wiki_link_raw.include?('\\\\|')
+    if wiki_link_raw.include?('\\\\|')
       @link.gsub!('\\|', "|")
       textlink = @link.split("|")
       @link = textlink[0]
       @text = textlink[1]
     elsif wiki_link_raw.include?('\\|')
       @link.delete!("\\")
+    elsif wiki_link_raw.first == "|"
+        # do nothing
+    elsif wiki_link_raw.last == "|"
+        # do nothing
     elsif wiki_link_raw.split("|").length == 2
       if wiki_link_raw.split("\\").length < 2
         @link = wiki_link_raw.split("|")[0]
