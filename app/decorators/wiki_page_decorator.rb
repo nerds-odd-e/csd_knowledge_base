@@ -57,13 +57,6 @@ class WikiPageDecorator < Draper::Decorator
   end
   
   private
-  def get_link_text(matched)
-    wikilink = WikiLink.new
-    wikilink.construct(matched)
-
-    return wikilink.link, wikilink.text
-  end
-
   def get_ancor(link)
     ancor = link
     ancorlink = link.split("#")
@@ -81,12 +74,12 @@ class WikiPageDecorator < Draper::Decorator
     link_reg = /\[\[([^\]\[]+)\]\]/
     body.gsub(link_reg) do |match|
       matched = match[link_reg, 1]
-      link, text = get_link_text(matched)
-
+      wikilink = WikiLink.new
+      wikilink.construct(matched)
       options = { class: 'internal' }
-      options[:class] = 'absent' if find_sibling(get_ancor(link)).blank?
+      options[:class] = 'absent' if find_sibling(get_ancor(wikilink.link)).blank?
 
-      h.link_to text, h.wiki_space_wiki_page_path(wiki_space, link), options
+      h.link_to wikilink.text, h.wiki_space_wiki_page_path(wiki_space, wikilink.link), options
     end.html_safe
   end
   
