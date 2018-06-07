@@ -20,9 +20,8 @@ class WikiLink
     @text = wiki_link_raw
     if escapefromreality(wiki_link_raw)
       return
-    end
-    if wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
-        # do nothing
+    elsif wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
+      return
     elsif wiki_link_raw.split("|").length == 2
       if wiki_link_raw.split("\\").length < 2
         @link = wiki_link_raw.split("|")[0]
