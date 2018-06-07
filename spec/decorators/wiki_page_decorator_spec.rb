@@ -71,6 +71,11 @@ describe WikiPageDecorator, type: :decorator do
       link_label: 'a',
       link_page: 'a (b)',
       url: 'a (b)'},
+    { context: '閉じ括弧の直前にパイプ | を挿入すると、生成時に半角括弧部分を除いた文字列をリンク名として表示する(ただしスペースがふたつ)',
+      body: '[[a  (b)|]]',
+      link_label: 'a',
+      link_page: 'a  (b)',
+      url: 'a  (b)'},
   ]
   test_cases_with_exist_check.each do |test_case|
     context test_case[:context] do
