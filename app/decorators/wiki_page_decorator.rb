@@ -36,7 +36,8 @@ class WikiLink
     @text = wiki_link_raw
     if escape_from_pipe(wiki_link_raw) || invalid_pipe(wiki_link_raw) || coloner(wiki_link_raw)
       return
-    elsif wiki_link_raw.split("|").length == 2
+    end
+    if wiki_link_raw.split("|").length == 2
       if wiki_link_raw.split("\\").length < 2
         @link = wiki_link_raw.split("|")[0]
         @text = wiki_link_raw.split("|")[1]
