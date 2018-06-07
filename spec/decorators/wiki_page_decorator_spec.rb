@@ -101,30 +101,43 @@ describe WikiPageDecorator, type: :decorator do
   end
 
   test_cases = [
-    {context: 'wikispaceの中にあるwikipageへのリンク', body: '[[wikispace:wikipage]]', link_label: 'wikipage', url: 'wikispace/wikipage'},
-    {context: 'スラッシュ付きでwikipageへのリンク', body: '[[wikispace/wikipage|wikipage]]', link_label: 'wikipage', url: 'wikispace/wikipage'},
-    {context: 'エスケープされたパイプの前にバックスラッシュがある', body: '[[link\\\\|text]]', link_label: 'text', url: 'link\\'},
-    {context: 'パイプがエスケープされている', body: '[[link\\|text]]', link_label: 'link|text', url: 'link|text'},
-    {context: 'リンク先が設定されていないエイリアス', body: '[[|text]]', link_label: '|text', url: '|text'},
-    {context: 'エイリアスが設定されていない', body: '[[link|]]', link_label: 'link|', url: 'link|'},
-    {context: 'パイプが二つ設定されている', body: '[[link||]]', link_label: 'link||', url: 'link||'},
-    {context: 'エイリアスはあるがパイプが二つ設定されている', body: '[[link||text]]', link_label: 'link||text', url: 'link||text'},  
+    { context: 'wikispaceの中にあるwikipageへのリンク', 
+      body: '[[wikispace:wikipage]]',
+      link_label: 'wikipage',
+      url: 'wikispace/wikipage'},
+    { context: 'スラッシュ付きでwikipageへのリンク',
+      body: '[[wikispace/wikipage|wikipage]]', 
+      link_label: 'wikipage', 
+      url: 'wikispace/wikipage'},
+    { context: 'エスケープされたパイプの前にバックスラッシュがある', 
+      body: '[[link\\\\|text]]', 
+      link_label: 'text', 
+      url: 'link\\'},
+    { context: 'パイプがエスケープされている', 
+      body: '[[link\\|text]]', 
+      link_label: 'link|text', 
+      url: 'link|text'},
+    { context: 'リンク先が設定されていないエイリアス', 
+      body: '[[|text]]', 
+      link_label: '|text', 
+      url: '|text'},
+    { context: 'エイリアスが設定されていない', 
+      body: '[[link|]]', 
+      link_label: 'link|', 
+      url: 'link|'},
+    { context: 'パイプが二つ設定されている', 
+      body: '[[link||]]', 
+      link_label: 'link||', 
+      url: 'link||'},
+    { context: 'エイリアスはあるがパイプが二つ設定されている', 
+      body: '[[link||text]]', 
+      link_label: 'link||text', 
+      url: 'link||text'},  
   ]
   test_cases.each do |test_case|
     context test_case[:context] do
       before { subject.body = test_case[:body] }
       its(:render_body) { should have_link(test_case[:link_label], href:h.wiki_space_wiki_page_path(subject.wiki_space, test_case[:url]), exact: true) }
     end
-  end
-
-  context 'nowiki tag囲まれていたらwikilinkとして機能しないこと' do
-    before { subject.body = "<nowiki>[[a]]</nowiki>" }
-    its(:render_body) { should_not have_link(href:h.wiki_space_wiki_page_path(subject.wiki_space, "a"), exact: true) }
-  end
-
-  context "ココココ" do
-    before { subject.body = "[[[[A]]]]" }
-    its(:render_body) { should have_link("A", href:h.wiki_space_wiki_page_path(subject.wiki_space, "A"), exact: true) }
-    its(:render_body) { should have_text("[[A]]", exact: true) }
   end
 end
