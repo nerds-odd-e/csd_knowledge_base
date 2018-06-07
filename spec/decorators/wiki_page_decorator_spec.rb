@@ -152,4 +152,14 @@ describe WikiPageDecorator, type: :decorator do
       its(:render_body) { should have_link(test[2], href:h.wiki_space_wiki_page_path(subject.wiki_space, test[3]), exact: true) }
     end
   end
+<<<<<<< HEAD
+=======
+
+  context 'nowiki tag囲まれていたらwikilinkとして機能しないこと' do
+    before { subject.body = "<nowiki>[[a]]<nowiki>" }
+    its(:render_body) { should_not have_link('[[a]]', href:h.wiki_space_wiki_page_path(subject.wiki_space, "a"), exact: true) }
+    its(:render_body) { should_not have_link('[[a]]', exact: true) }
+  end
+
+>>>>>>> nowiki着手
 end
