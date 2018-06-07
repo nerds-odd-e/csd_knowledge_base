@@ -118,7 +118,8 @@ describe WikiPageDecorator, type: :decorator do
     {context: 'リンク先が設定されていないエイリアス', body: '[[|text]]', link_label: '|text', url: '|text'},
     {context: 'エイリアスが設定されていない', body: '[[link|]]', link_label: 'link|', url: 'link|'},
     {context: 'パイプが二つ設定されている', body: '[[link||]]', link_label: 'link||', url: 'link||'},
-    {context: 'エイリアスはあるがパイプが二つ設定されている', body: '[[link||text]]', link_label: 'link||text', url: 'link||text'},  
+    {context: 'エイリアスはあるがパイプが二つ設定されている', body: '[[link||text]]', link_label: 'link||text', url: 'link||text'},
+    {context: '閉じ括弧の直前にパイプ | を挿入すると、生成時に半角括弧部分を除いた文字列をリンク名として表示する', body: '[[a (b)|]]', link_label: 'a', url: 'a (b)'}  
   ]
   test_cases.each do |test_case|
     context test_case[:context] do

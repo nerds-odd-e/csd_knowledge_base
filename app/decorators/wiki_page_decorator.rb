@@ -24,25 +24,20 @@ class WikiLink
     false
   end
 
-  def invalid_pipe(wiki_link_raw)
-    if wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
-      return true
-    end
-    false
-  end
-
   def construct(wiki_link_raw) 
     @link = wiki_link_raw
     @text = wiki_link_raw
-    if escape_from_pipe(wiki_link_raw) || invalid_pipe(wiki_link_raw) || coloner(wiki_link_raw)
+    if escape_from_pipe(wiki_link_raw) || coloner(wiki_link_raw)
       return
     end
-    a = wiki_link_raw.split("|")
-    if a.length == 2
-      if wiki_link_raw.split("\\").length < 2
-        @link = a[0]
-        @text = a[1]
-      end
+    a = wiki_link_raw.split("|", -1)
+    pp a
+    if a.length < 2 || a[0].empty? || a[1].empty?
+      return
+    end
+    if wiki_link_raw.split("\\").length < 2
+      @link = a[0]
+      @text = a[1]
     end
   end
 
