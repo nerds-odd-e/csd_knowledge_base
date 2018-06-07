@@ -1,4 +1,32 @@
 # frozen_string_literal: true
+class WikiLink
+  attr_accessor :link, :text
+  def construct(wiki_link_raw)
+    @link = wiki_link_raw
+    @text = wiki_link_raw
+
+    if wiki_link_raw.first == "|"
+      # do nothing
+    elsif wiki_link_raw.last == "|"
+      # do nothing
+    elsif wiki_link_raw.include?('\\\\|')
+      @link.gsub!('\\|', "|")
+      textlink = @link.split("|")
+      @link = textlink[0]
+      @text = textlink[1]
+    elsif wiki_link_raw.include?('\\|')
+      @link.delete!("\\")
+    elsif wiki_link_raw.split("|").length == 2
+      if wiki_link_raw.split("\\").length < 2
+        @link = wiki_link_raw.split("|")[0]
+        @text = wiki_link_raw.split("|")[1]
+      end
+    elsif wiki_link_raw.split(":").length == 2
+      @link = wiki_link_raw.gsub(":", "/")
+      @text = wiki_link_raw.split(":")[1]
+    end
+  end
+end
 
 class WikiPageDecorator < Draper::Decorator
   delegate_all
@@ -10,31 +38,10 @@ class WikiPageDecorator < Draper::Decorator
   
   private
   def get_link_text(matched)
-    link = matched
-    text = matched
+    wikilink = WikiLink.new
+    wikilink.construct(matched)
 
-    if matched.first == "|"
-      # do nothing
-    elsif matched.last == "|"
-      # do nothing
-    elsif matched.include?('\\\\|')
-      link.gsub!('\\|', "|")
-      textlink = link.split("|")
-      link = textlink[0]
-      text = textlink[1]
-    elsif matched.include?('\\|')
-      link.delete!("\\")
-    elsif matched.split("|").length == 2
-      if matched.split("\\").length < 2
-        link = matched.split("|")[0]
-        text = matched.split("|")[1]
-      end
-    elsif matched.split(":").length == 2
-      link = matched.gsub(":", "/")
-      text = matched.split(":")[1]
-    end
-
-    return link, text
+    return wikilink.link, wikilink.text
   end
 
   def render_body_html_unsafe
