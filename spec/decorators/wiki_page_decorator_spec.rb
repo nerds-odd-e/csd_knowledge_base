@@ -123,8 +123,8 @@ describe WikiPageDecorator, type: :decorator do
 
     context 'when the linked page exists' do
       before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
-      xit(:render_body) { should have_link(
-        'link#section',
+      its(:render_body) { should have_link(
+        'other',
         href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#section'),
         class: 'internal',
         exact: true
