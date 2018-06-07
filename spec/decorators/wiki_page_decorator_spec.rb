@@ -132,4 +132,9 @@ describe WikiPageDecorator, type: :decorator do
     its(:render_body) { should_not have_link(href:h.wiki_space_wiki_page_path(subject.wiki_space, "a"), exact: true) }
   end
 
+  context "ココココ" do
+    before { subject.body = "[[[[A]]]]" }
+    its(:render_body) { should have_link("A", href:h.wiki_space_wiki_page_path(subject.wiki_space, "A"), exact: true) }
+    its(:render_body) { should have_text("[[A]]", exact: true) }
+  end
 end
