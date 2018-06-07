@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-When("I edited the page with context {string}") do |wikilink|
-  fill_in "body".humanize, with: wikilink
+When("I edited the page with context {string}") do |wiki_link|
+  fill_in "body".humanize, with: wiki_link
   find('input[name="commit"]').click
 end
 
