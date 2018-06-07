@@ -64,17 +64,22 @@ class WikiPageDecorator < Draper::Decorator
     return wikilink.link, wikilink.text
   end
 
+  def get_ancor(link)
+    ancor = link
+    ancorlink = link.split("#")
+    if ancorlink.length == 2
+      ancor = ancorlink[0]
+    end
+    ancor
+  end
+
   def render_body_html_unsafe
     link_reg = /\[\[([^\]]+)\]\]/
     body.gsub(link_reg) do |match|
       matched = match[link_reg, 1]
       link, text = get_link_text(matched)
 
-      ancor = link
-      ancorlink = link.split("#")
-      if ancorlink.length == 2
-        ancor = ancorlink[0]
-      end
+      ancor = get_ancor(link)
       options = { class: 'internal' }
       options[:class] = 'absent' if find_sibling(ancor).blank?
     
