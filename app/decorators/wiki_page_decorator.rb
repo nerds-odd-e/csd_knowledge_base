@@ -22,9 +22,7 @@ class WikiLink
     if escaped
       return
     end
-    if wiki_link_raw.first == "|"
-        # do nothing
-    elsif wiki_link_raw.last == "|"
+    if wiki_link_raw.first == "|" || wiki_link_raw.last == "|"
         # do nothing
     elsif wiki_link_raw.split("|").length == 2
       if wiki_link_raw.split("\\").length < 2
@@ -36,7 +34,7 @@ class WikiLink
       @text = wiki_link_raw.split(":")[1]
     end
   end
-  
+
 end
 
 class WikiPageDecorator < Draper::Decorator
