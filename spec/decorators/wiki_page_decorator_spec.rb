@@ -65,27 +65,27 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
-  context 'the page with an invalid link and text that generates normal link' do
+  context 'もしもwikilinksの最初がpipeだったらそのまま出たらいいなぁ' do
     before { subject.body = '[[|text]]' }
     its(:render_body) { should have_link('|text', exact: true) }
   end
 
-  context 'the page with an invalid link and text that generates normal link2' do
+  context 'もしもwikilinksの最後がpipeだったらそのまま出たらいいなぁ' do
     before { subject.body = '[[link2|]]' }
     its(:render_body) { should have_link('link2|', exact: true) }
   end
 
-  context 'the page with an invalid link and text that generates normal link2' do
+  context 'もしもwikilinksの最後がpipe 2つだったらそのまま出たらいいなぁ' do
     before { subject.body = '[[link2||]]' }
     its(:render_body) { should have_link('link2||', exact: true) }
   end
 
-  context 'the page with an invalid link and text that generates normal link2' do
+  context 'もしもパイプが2つだったらそのまま出たらいいなぁ' do
     before { subject.body = '[[link2||text]]' }
     its(:render_body) { should have_link('link2||text', exact: true) }
   end
 
-  context 'the page with an invalid link and text that generates normal link2' do
+  context 'もしもwikilinksに#がきたら、テキストとリンクになるといいなぁ' do
     before { subject.body = '[[link#section]]' }
     its(:render_body) {
       should have_link(
@@ -108,7 +108,7 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
-  context 'brabra' do
+  context 'もしもwikilinksに#とpipeがきたら、いい感じになるといいなぁ' do
     before { subject.body = '[[link#section|other]]' }
     xit(:render_body) {
       should have_link(
@@ -131,12 +131,12 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
-  context 'the page with an invalid link and text that generates normal link2' do
+  context 'pipeがエスケープされているときはただの縦棒だ！' do
     before { subject.body = "[[link\\|text]]" }
     its(:render_body) { should have_link('link|text', exact: true) }
   end
 
-  context 'double back slash case' do
+  context 'バックスラッシュがエスケープされているときはただのバックスラッシュだ！' do
     before { subject.body = "[[link\\\\|text]]" }
     its(:render_body) { should have_link(
       'text',
