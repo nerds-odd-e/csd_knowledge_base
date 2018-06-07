@@ -62,25 +62,6 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
-  context 'リンク先が設定されていないエイリアス' do
-    before { subject.body = '[[|text]]' }
-    its(:render_body) { should have_link('|text', exact: true) }
-  end
-
-  context 'エイリアスが設定されていない' do
-    before { subject.body = '[[link|]]' }
-    its(:render_body) { should have_link('link|', exact: true) }
-  end
-
-  context 'パイプが二つ設定されている' do
-    before { subject.body = '[[link||]]' }
-    its(:render_body) { should have_link('link||', exact: true) }
-  end
-
-  context 'エイリアスはあるがパイプが二つ設定されている' do
-    before { subject.body = '[[link||text]]' }
-    its(:render_body) { should have_link('link||text', exact: true) }
-  end
 
   context 'アンカーが設定されているリンク' do
     before { subject.body = '[[link#anchor]]' }
@@ -117,7 +98,7 @@ describe WikiPageDecorator, type: :decorator do
     }
 
     context 'リンクされたページが存在している' do
-      before { create :wiki_page, path: '', wiki_space: subject.wiki_space }
+      before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
       xit(:render_body) { should have_link(
         'link#anchor',
         href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
@@ -128,28 +109,21 @@ describe WikiPageDecorator, type: :decorator do
     end
   end
 
-  context 'パイプがエスケープされている' do
-    before { subject.body = "[[link\\|text]]" }
-    its(:render_body) { should have_link('link|text', exact: true) }
-  end
-
-  context 'エスケープされたパイプの前にバックスラッシュがある' do
-    before { subject.body = "[[link\\\\|text]]" }
-    its(:render_body) { should have_link(
-      'text',
-      href:h.wiki_space_wiki_page_path(subject.wiki_space, "link\\"),
-      exact: true
-    ) }
-  end
-
-  test_list = [
-    ['wikispaceの中にあるwikipageへのリンク', '[[wikispace:wikipage]]', 'wikipage', 'wikispace/wikipage'],
-    ['スラッシュ付きでwikipageへのリンク', '[[wikispace/wikipage|wikipage]]', 'wikipage', 'wikispace/wikipage'],
+  test_cases = [
+    # context, body, link_label, url
+    {context: 'wikispaceの中にあるwikipageへのリンク', body: '[[wikispace:wikipage]]', link_label: 'wikipage', url: 'wikispace/wikipage'},
+    {context: 'スラッシュ付きでwikipageへのリンク', body: '[[wikispace/wikipage|wikipage]]', link_label: 'wikipage', url: 'wikispace/wikipage'},
+    {context: 'エスケープされたパイプの前にバックスラッシュがある', body: '[[link\\\\|text]]', link_label: 'text', url: 'link\\'},
+    {context: 'パイプがエスケープされている', body: '[[link\\|text]]', link_label: 'link|text', url: 'link|text'},
+    {context: 'リンク先が設定されていないエイリアス', body: '[[|text]]', link_label: '|text', url: '|text'},
+    {context: 'エイリアスが設定されていない', body: '[[link|]]', link_label: 'link|', url: 'link|'},
+    {context: 'パイプが二つ設定されている', body: '[[link||]]', link_label: 'link||', url: 'link||'},
+    {context: 'エイリアスはあるがパイプが二つ設定されている', body: '[[link||text]]', link_label: 'link||text', url: 'link||text'},  
   ]
-  test_list.each do |test|
-    context test[0] do
-      before { subject.body = test[1] }
-      its(:render_body) { should have_link(test[2], href:h.wiki_space_wiki_page_path(subject.wiki_space, test[3]), exact: true) }
+  test_cases.each do |test_case|
+    context test_case[:context] do
+      before { subject.body = test_case[:body] }
+      its(:render_body) { should have_link(test_case[:link_label], href:h.wiki_space_wiki_page_path(subject.wiki_space, test_case[:url]), exact: true) }
     end
   end
 
