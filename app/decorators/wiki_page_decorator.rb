@@ -35,7 +35,7 @@ class WikiLink
       return
     end
     result = /([^()]*) +\([^()]*\)/.match a[0]
-    if result
+    if result 
       @link = a[0]
       @text = result[1]
     elsif a[1].empty?
