@@ -31,7 +31,6 @@ class WikiLink
       return
     end
     a = wiki_link_raw.split("|", -1)
-    # pp a
     if a.length < 2
       return
     end
@@ -85,7 +84,7 @@ class WikiPageDecorator < Draper::Decorator
     body.gsub(nowiki_reg) do |match|
       return match[nowiki_reg, 1]
     end
-    link_reg = /\[\[([^(\]\[)]+)\]\]/
+    link_reg = /\[\[([^\]\[]+)\]\]/
     body.gsub(link_reg) do |match|
       matched = match[link_reg, 1]
       link, text = get_link_text(matched)

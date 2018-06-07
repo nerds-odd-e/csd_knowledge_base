@@ -133,10 +133,10 @@ describe WikiPageDecorator, type: :decorator do
       body: '[[link||text]]', 
       link_label: 'link||text', 
       url: 'link||text'},  
-    {context: '閉じ括弧の直前にパイプ | を挿入すると、生成時に半角括弧部分を除いた文字列をリンク名として表示する',
+    { context: '閉じ括弧の直前にパイプ | を挿入すると、生成時に半角括弧部分を除いた文字列をリンク名として表示する',
       body: '[[a (b)|]]',
       link_label: 'a',
-      url: 'a (b)'},  
+      url: 'a (b)'},
   ]
   test_cases.each do |test_case|
     context test_case[:context] do
