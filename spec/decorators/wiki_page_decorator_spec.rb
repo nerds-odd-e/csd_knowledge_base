@@ -6,6 +6,11 @@ describe WikiPageDecorator, type: :decorator do
   subject { create(:wiki_page).decorate }
 
   test_cases_with_exist_check = [
+    { context: 'the page with a link',
+      body: '[[something here]]',
+      link_label: 'something here',
+      link_page: 'something here',
+      url: 'something here'},
     { context: 'the page with link and label',
       body: '[[link|text]]',
       link_label: 'text',
@@ -16,6 +21,56 @@ describe WikiPageDecorator, type: :decorator do
       link_label: 'link#anchor',
       link_page: 'link',
       url: 'link#anchor'},
+    { context: 'アンカーとエイリアスが設定されているリンク',
+      body: '[[link#anchor|other]]',
+      link_label: 'other',
+      link_page: 'link',
+      url: 'link#anchor'},
+    { context: 'wikispaceの中にあるwikipageへのリンク',
+      body: '[[wikispace:wikipage]]',
+      link_label: 'wikipage',
+      link_page: 'wikispace/wikipage',
+      url: 'wikispace/wikipage'},
+    { context: 'スラッシュ付きでwikipageへのリンク',
+      body: '[[wikispace/wikipage|wikipage]]',
+      link_label: 'wikipage',
+      link_page: 'wikispace/wikipage',
+      url: 'wikispace/wikipage'},
+    { context: 'エスケープされたパイプの前にバックスラッシュがある',
+      body: '[[link\\\\|text]]',
+      link_label: 'text',
+      link_page: 'link\\',
+      url: 'link\\'},
+    { context: 'パイプがエスケープされている',
+      body: '[[link\\|text]]',
+      link_label: 'link|text',
+      link_page: 'link|text',
+      url: 'link|text'},
+    { context: 'リンク先が設定されていないエイリアス',
+      body: '[[|text]]',
+      link_label: '|text',
+      link_page: '|text',
+      url: '|text'},
+    { context: 'エイリアスが設定されていない',
+      body: '[[link|]]',
+      link_label: 'link|',
+      link_page: 'link|',
+      url: 'link|'},
+    { context: 'パイプが二つ設定されている',
+      body: '[[link||]]',
+      link_label: 'link||',
+      link_page: 'link||',
+      url: 'link||'},
+    { context: 'エイリアスはあるがパイプが二つ設定されている', 
+      body: '[[link||text]]', 
+      link_label: 'link||text', 
+      link_page: 'link||text', 
+      url: 'link||text'},  
+    { context: '閉じ括弧の直前にパイプ | を挿入すると、生成時に半角括弧部分を除いた文字列をリンク名として表示する',
+      body: '[[a (b)|]]',
+      link_label: 'a',
+      link_page: 'a (b)',
+      url: 'a (b)'},
   ]
   test_cases_with_exist_check.each do |test_case|
     context test_case[:context] do
@@ -43,144 +98,6 @@ describe WikiPageDecorator, type: :decorator do
           )
         }
       end
-    end
-  end
-  context 'the page with a link' do
-    before { subject.body = '[[something here]]' }
-    its(:render_body) {
-      should have_link(
-        'something here',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'something here'),
-        class: 'absent'
-      )
-    }
-
-    context 'when the linked page exists' do
-      before { create :wiki_page, path: 'something here', wiki_space: subject.wiki_space }
-      its(:render_body) { should_not have_link(
-        'something here',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'something here'),
-        class: 'absent'
-        )
-      }
-      its(:render_body) { should have_link(
-        'something here',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'something here'),
-        class: 'internal'
-        )
-      }
-    end
-  end
-
-  context 'the page with link and label' do
-    before { subject.body = '[[link|text]]' }
-    its(:render_body) {
-      should have_link(
-        'text',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link'),
-        class: 'absent'
-      )
-    }
-
-    context 'when the linked page exists' do
-      before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
-      its(:render_body) { should have_link(
-        'text',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link'),
-        class: 'internal'
-        )
-      }
-    end
-  end
-
-  context 'アンカーが設定されているリンク' do
-    before { subject.body = '[[link#anchor]]' }
-    its(:render_body) {
-      should have_link(
-        'link#anchor',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
-        class: 'absent',
-        exact: true
-      )
-    }
-
-    context 'リンクされたページが存在している' do
-      before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
-      its(:render_body) { should have_link(
-        'link#anchor',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
-        class: 'internal',
-        exact: true
-        )
-      }
-    end
-  end
-
-  context 'アンカーとエイリアスが設定されている' do
-    before { subject.body = '[[link#anchor|other]]' }
-    its(:render_body) {
-      should have_link(
-        'other',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
-        class: 'absent',
-        exact: true
-      )
-    }
-
-    context 'リンクされたページが存在している' do
-      before { create :wiki_page, path: 'link', wiki_space: subject.wiki_space }
-      its(:render_body) { should have_link(
-        'other',
-        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'link#anchor'),
-        class: 'internal',
-        exact: true
-        )
-      }
-    end
-  end
-
-  test_cases = [
-    { context: 'wikispaceの中にあるwikipageへのリンク',
-      body: '[[wikispace:wikipage]]',
-      link_label: 'wikipage',
-      url: 'wikispace/wikipage'},
-    { context: 'スラッシュ付きでwikipageへのリンク',
-      body: '[[wikispace/wikipage|wikipage]]',
-      link_label: 'wikipage',
-      url: 'wikispace/wikipage'},
-    { context: 'エスケープされたパイプの前にバックスラッシュがある',
-      body: '[[link\\\\|text]]',
-      link_label: 'text',
-      url: 'link\\'},
-    { context: 'パイプがエスケープされている',
-      body: '[[link\\|text]]',
-      link_label: 'link|text',
-      url: 'link|text'},
-    { context: 'リンク先が設定されていないエイリアス',
-      body: '[[|text]]',
-      link_label: '|text',
-      url: '|text'},
-    { context: 'エイリアスが設定されていない',
-      body: '[[link|]]',
-      link_label: 'link|',
-      url: 'link|'},
-    { context: 'パイプが二つ設定されている',
-      body: '[[link||]]',
-      link_label: 'link||',
-      url: 'link||'},
-    { context: 'エイリアスはあるがパイプが二つ設定されている', 
-      body: '[[link||text]]', 
-      link_label: 'link||text', 
-      url: 'link||text'},  
-    { context: '閉じ括弧の直前にパイプ | を挿入すると、生成時に半角括弧部分を除いた文字列をリンク名として表示する',
-      body: '[[a (b)|]]',
-      link_label: 'a',
-      url: 'a (b)'},
-  ]
-  test_cases.each do |test_case|
-    context test_case[:context] do
-      before { subject.body = test_case[:body] }
-      its(:render_body) { should have_link(test_case[:link_label], href:h.wiki_space_wiki_page_path(subject.wiki_space, test_case[:url]), exact: true) }
     end
   end
 end
