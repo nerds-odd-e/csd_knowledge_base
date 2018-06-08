@@ -57,13 +57,13 @@ class WikiPageDecorator < Draper::Decorator
   end
   
   private
-  def get_ancor(link)
-    ancor = link
-    ancorlink = link.split("#")
-    if ancorlink.length == 2
-      ancor = ancorlink[0]
+  def escape_from_hash(link)
+    anchor = link
+    anchorlink = link.split("#")
+    if anchorlink.length == 2
+      anchor = anchorlink[0] + '%23' + anchorlink[1]
     end
-    ancor
+    anchor
   end
 
   def render_body_html_unsafe
@@ -77,7 +77,7 @@ class WikiPageDecorator < Draper::Decorator
       wikilink = WikiLink.new
       wikilink.construct(matched)
       options = { class: 'internal' }
-      options[:class] = 'absent' if find_sibling(get_ancor(wikilink.link)).blank?
+      options[:class] = 'absent' if find_sibling(escape_from_hash(wikilink.link)).blank?
 
       h.link_to wikilink.text, h.wiki_space_wiki_page_path(wiki_space, wikilink.link), options
     end.html_safe

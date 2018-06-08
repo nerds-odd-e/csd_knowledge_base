@@ -19,12 +19,12 @@ describe WikiPageDecorator, type: :decorator do
     { context: 'アンカーが設定されているリンク',
       body: '[[link#anchor]]',
       link_label: 'link#anchor',
-      link_page: 'link',
+      link_page: 'link%23anchor',
       url: 'link#anchor' },
     { context: 'アンカーとエイリアスが設定されているリンク',
       body: '[[link#anchor|other]]',
       link_label: 'other',
-      link_page: 'link',
+      link_page: 'link%23anchor',
       url: 'link#anchor' },
     { context: 'wikispaceの中にあるwikipageへのリンク',
       body: '[[wikispace:wikipage]]',
@@ -103,6 +103,25 @@ describe WikiPageDecorator, type: :decorator do
           )
         }
       end
+    end
+  end
+  context 'Test case for anchor' do
+    before { subject.body = '[[a#b]]' }
+    its(:render_body) {
+      should have_link(
+        'a#b',
+        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'a#b'),
+        class: 'absent'
+      )
+    }
+    context 'when the not linked page exists' do
+      before { create :wiki_page, path: 'a', wiki_space: subject.wiki_space }
+      its(:render_body) { should have_link(
+        'a#b',
+        href:h.wiki_space_wiki_page_path(subject.wiki_space, 'a#b'),
+        class: 'absent'
+        )
+      }
     end
   end
 end
