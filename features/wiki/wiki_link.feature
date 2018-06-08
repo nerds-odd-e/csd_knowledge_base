@@ -39,6 +39,6 @@ Feature: Wiki Link
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with
       | title  | body                                 |
-      | a page | see a link to <nowiki>[[a]]</nowiki> |
+      | a page | see a link to &lt;nowiki&gt;[[a]]&lt;/nowiki&lt; |
     Then I should not see a link "a" to "/wiki/trainers/wiki/a"
     And "see a link to [[a]]"というテキストが存在する
