@@ -46,6 +46,7 @@ RSpec.describe WikiPageController, type: :controller do
       page.reload
       expect(page.title).to eq 'new name'
       expect(page.current_revision.user).to eq user
+      expect(WikiPageRevision.where(wiki_page: page).count).to eq 2
     end
 
     it 'create the page' do
