@@ -51,9 +51,7 @@ end
 class WikiPageDecorator < Draper::Decorator
   delegate_all
   def render_body
-    # rubocop:disable all
     render_body_html_unsafe
-    # rubocop:enable all
   end
   
   def render_body_html_unsafe
