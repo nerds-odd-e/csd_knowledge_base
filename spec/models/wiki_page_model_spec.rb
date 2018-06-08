@@ -34,7 +34,7 @@ RSpec.describe WikiPage, type: :model do
       it { expect(subject.current_revision.user).to eq user }
     end
 
-    xit { expect { subject.update(body: 'new title') }.to change { WikiPageRevision.where(wiki_page: subject).count }.to 2 }
+    it { expect { subject.update(user: user) }.to change { WikiPageRevision.where(wiki_page: subject).count }.to 2 }
     its(:render_body) { should be_html_safe }
 
     context 'creating a page with same path in another space' do
