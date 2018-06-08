@@ -34,10 +34,11 @@ Feature: Wiki Link
       | [[a]]b      | a           | ab   | a     |
       | [[[[A]]]]   | A           | [[A]]| A     |
 
+  @wip
   Scenario: <nowiki>[[a]]</nowiki> でリンクが生成されない
     Given I visit "/wiki/trainers/wiki/Path/To/My/Page"
     When I edited the page with
       | title  | body                                 |
       | a page | see a link to <nowiki>[[a]]</nowiki> |
     Then I should not see a link "a" to "/wiki/trainers/wiki/a"
-    And "[[a]]"というテキストが存在する
+    And "see a link to [[a]]"というテキストが存在する
