@@ -56,16 +56,6 @@ class WikiPageDecorator < Draper::Decorator
     # rubocop:enable all
   end
   
-  private
-  def escape_from_hash(link)
-    anchor = link
-    anchorlink = link.split("#")
-    if anchorlink.length == 2
-      anchor = anchorlink[0] + '%23' + anchorlink[1]
-    end
-    anchor
-  end
-
   def render_body_html_unsafe
     nowiki_reg = /<nowiki>(\[\[[^\]]+\]\])<\/nowiki>/
     body.gsub(nowiki_reg) do |match|
@@ -77,7 +67,7 @@ class WikiPageDecorator < Draper::Decorator
       wikilink = WikiLink.new
       wikilink.construct(matched)
       options = { class: 'internal' }
-      options[:class] = 'absent' if find_sibling(escape_from_hash(wikilink.link)).blank?
+      options[:class] = 'absent' if find_sibling(wikilink.link).blank?
 
       h.link_to wikilink.text, h.wiki_space_wiki_page_path(wiki_space, wikilink.link), options
     end.html_safe
